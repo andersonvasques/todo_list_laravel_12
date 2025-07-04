@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    container_name: projeto1_app
+    container_name: projeto_base
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,7 +16,7 @@ services:
       - laravel
 
   nginx:
-    container_name: projeto1_nginx
+    container_name: projeto_base_nginx
     image: nginx:alpine
     restart: unless-stopped
     ports:
@@ -28,7 +28,7 @@ services:
       - laravel
 
   db:
-    container_name: projeto1_mysql
+    container_name: projeto_base_mysql
     image: mysql:8.0
     platform: linux/x86_64
     restart: unless-stopped
@@ -38,14 +38,14 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
       MYSQL_USER: ${DB_USERNAME:-username}
     volumes:
-      - projeto1_db_data:/var/lib/mysql
+      - projeto_base_db:/var/lib/mysql
     ports:
       - "3300:3306"
     networks:
       - laravel
 
   phpmyadmin:
-    container_name: projeto1_phpmyadmin
+    container_name: projeto_base_phpmyadmin
     image: phpmyadmin/phpmyadmin
     platform: linux/x86_64
     restart: unless-stopped
@@ -59,7 +59,7 @@ services:
       - laravel
 
   redis:
-    container_name: projeto1_redis
+    container_name: projeto_base_redis
     image: redis:latest
     networks:
       - laravel
@@ -69,4 +69,4 @@ networks:
     driver: bridge
 
 volumes:
-  projeto1_db_data:
+  projeto_base_db:
