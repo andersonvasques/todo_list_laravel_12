@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\TarefaController;
+use App\Http\Controllers\Site\SiteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
+Route::get('/index', [TarefaController::class, 'index'])->name('index');
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
