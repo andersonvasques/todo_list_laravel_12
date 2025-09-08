@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-          Schema::create('teste', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->index();
+        Schema::create('tarefas', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('titulo');
+            $table->enum('status', ['Aberto', 'Concluido']);
+            $table->foreignId('id_user')->constrained('users');
+            $table->timestamps();
         });
     }
 
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('tarefas');
     }
 };
