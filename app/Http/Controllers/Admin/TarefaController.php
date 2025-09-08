@@ -15,4 +15,9 @@ class TarefaController extends Controller
 
         return view('admin.tarefas.index', compact('tarefas'));
     }
+
+    public function create()
+    {
+        return view('admin.tarefas.create');
+    }
 }

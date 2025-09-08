@@ -7,6 +7,7 @@ use Inertia\Inertia;
 
 Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
 Route::get('/index', [TarefaController::class, 'index'])->name('index');
+Route::get('/tarefas/create', [TarefaController::class, 'create'])->name('tarefas.create');
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
