@@ -10,14 +10,17 @@ class TarefaController extends Controller
 {
     public function index(Tarefa $tarefa)
     {
-        $tarefas = $tarefa->all();
+        $tarefas = $tarefa->where('id_user', 1)->get();
         dd($tarefas);
-
-        return view('admin.tarefas.index', compact('tarefas'));
     }
 
-    public function create()
+    public function store(Request $request, Tarefa $tarefa)
     {
-        return view('admin.tarefas.create');
+        $data = $request->all();
+        $data['status'] = 'Aberto';
+
+        $tarefa = $tarefa->create($data);
+
+        return redirect()->route('tarefas.index');
     }
 }

@@ -1,12 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\TarefaController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::post('/login', function () {
+//     return dd('login');
+// });
 
-Route::post('/login', function () {
-    return dd('login');
-});
+Route::post('/tarefas', [TarefaController::class, 'store'])->name('tarefas.store');
+Route::get('/tarefas/index', [TarefaController::class, 'index'])->name('tarefas.index');
