@@ -9,3 +9,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/tarefas', [TarefaController::class, 'store'])->name('tarefas.store');
 Route::get('/tarefas/index', [TarefaController::class, 'index'])->name('tarefas.index');
+Route::patch('/tarefas/{id}', [TarefaController::class, 'update'])->name('tarefas.update');
