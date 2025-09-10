@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateTarefa;
 use App\Models\Tarefa;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,14 +20,18 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function store(Request $request, Tarefa $tarefa)
+    public function store(StoreUpdateTarefa $request, Tarefa $tarefa)
     {
         $data = $request->all();
         $data['status'] = 'Aberto';
 
         $tarefa = $tarefa->create($data);
 
-        return redirect()->route('tarefas.index');
+        // return redirect()->route('tarefas.index');
+        return response()->json([
+            'message' => 'Tarefa criada com sucesso',
+            'tarefa' => $tarefa
+        ]);
     }
 
     public function update(Request $request, Tarefa $tarefa, string|int $id)
@@ -50,4 +55,21 @@ class TarefaController extends Controller
             'tarefa' => $tarefa,
         ]);
     }
+
+    public function destroy(Tarefa $tarefa, string|int $id)
+    {
+        if (!$tarefa = $tarefa->find($id)) {
+            return response()->json([
+                'error' => 'Tarefa não encontrada'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $tarefa->delete();
+
+        return response()->json([
+            'message' => 'Tarefa excluida com sucesso',
+            'tarefa' => $tarefa
+        ]);
+    }
+
 }
