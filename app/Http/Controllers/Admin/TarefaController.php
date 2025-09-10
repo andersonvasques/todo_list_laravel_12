@@ -22,7 +22,7 @@ class TarefaController extends Controller
 
     public function store(StoreUpdateTarefa $request, Tarefa $tarefa)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $data['status'] = 'Aberto';
 
         $tarefa = $tarefa->create($data);
@@ -34,7 +34,7 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function update(Request $request, Tarefa $tarefa, string|int $id)
+    public function update(StoreUpdateTarefa $request, Tarefa $tarefa, string|int $id)
     {
         $tarefa = $tarefa->find($id);
 
@@ -44,11 +44,7 @@ class TarefaController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $tarefa->update($request->only([
-            'titulo',
-        ]));
-
-        // return redirect()->route('tarefas.index');
+        $tarefa->update($request->validated());
 
         return response()->json([
             'message' => 'Tarefa atualizada com sucesso',

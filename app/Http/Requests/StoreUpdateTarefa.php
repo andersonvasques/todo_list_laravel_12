@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUpdateTarefa extends FormRequest
 {
@@ -21,7 +22,7 @@ class StoreUpdateTarefa extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'titulo' => [
                 'required',
                 'min:3',
@@ -29,5 +30,16 @@ class StoreUpdateTarefa extends FormRequest
                 'unique:tarefas'
             ],
         ];
+
+        if ($this->method() === 'PATCH' || $this->method() === 'PUT') {
+            $rules['titulo'] = [
+                'required',
+                'min:3',
+                'max:255',
+                Rule::unique('tarefas')->ignore($this->id),
+            ];
+        }
+
+        return $rules;
     }
 }
