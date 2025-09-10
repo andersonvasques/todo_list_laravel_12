@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateTarefa;
 use App\Models\Tarefa;
+use App\Services\TarefaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TarefaController extends Controller
 {
-    public function index(Tarefa $tarefa)
+    public function __construct(
+        protected TarefaService $service
+    ){}
+
+    public function index(Request $request)
     {
-        $tarefas = $tarefa->where('id_user', 1)->get();
-        // dd($tarefas);
+        // $tarefas = $tarefa->where('id_user', 1)->get();
+        $tarefas = $this->service->getAll($request->filter);
 
         return response()->json([
             'tarefas' => $tarefas,
@@ -52,15 +57,9 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function destroy(Tarefa $tarefa, string|int $id)
+    public function destroy(string|int $id)
     {
-        if (!$tarefa = $tarefa->find($id)) {
-            return response()->json([
-                'error' => 'Tarefa não encontrada'
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        $tarefa->delete();
+        $tarefa = $this->service->delete($id);
 
         return response()->json([
             'message' => 'Tarefa excluida com sucesso',
