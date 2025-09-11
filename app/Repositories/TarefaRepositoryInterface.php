@@ -10,9 +10,9 @@ use stdClass;
 
 interface TarefaRepositoryInterface
 {
-    public function getAll(string|null $filter): array;
-    public function findOne(string|int $id): stdClass|null;
+    public function get(string|null $filter): array;
+    public function show(string|int $id): stdClass|null;
     public function delete(string|int $id): void;
-    public function new(CreateTarefaDTO $dto): stdClass;
+    public function store(CreateTarefaDTO $dto): stdClass;
     public function update(UpdateTarefaDTO $dto): stdClass|null;
 }

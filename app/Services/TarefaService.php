@@ -23,7 +23,7 @@ class TarefaService
      * @param string|null $filter
      * @return array
      */
-    public function getAll(string|null $filter): array
+    public function get(string|null $filter): array
     {
         return $this->repository->getAll($filter);
     }
@@ -34,7 +34,7 @@ class TarefaService
      * @param string|int $id
      * @return \stdClass|null
      */
-    public function findOne(string|int $id): stdClass|null
+    public function show(string|int $id): stdClass|null
     {
         return $this->repository->findOne($id);
     }
@@ -44,7 +44,7 @@ class TarefaService
      * Create a new register in the repository
      * @return void
      */
-    public function new(CreateTarefaDTO $dto): stdClass
+    public function store(CreateTarefaDTO $dto): stdClass
     {
         return $this->repository->new($dto);
     }

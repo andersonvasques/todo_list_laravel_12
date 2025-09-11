@@ -4,28 +4,41 @@ namespace App\Repositories;
 
 use App\DTO\CreateTarefaDTO;
 use App\DTO\UpdateTarefaDTO;
+use App\Models\Tarefa;
 use stdClass;
 
 class TarefaEloquentORM implements TarefaRepositoryInterface
 {
-    public function getAll(string|null $filter): array
+    public function __construct(
+        protected Tarefa $model
+    ){}
+
+    public function get(string|null $filter): array
     {
-        return [];
+        return $this->model->where(function ($query) use ($filter) {
+            if($filter) {
+                $query->where()
+            }
+        })
     }
-    public function findOne(string|int $id): stdClass|null
+
+    public function show(int $id): object|null
     {
         return null;
     }
+
     public function delete(string|int $id): void
     {
 
     }
-    public function new(CreateTarefaDTO $dto): stdClass
+
+    public function store(CreateTarefaDTO $dto): stdClass
     {
         return new stdClass();
     }
-    public function update(UpdateTarefaDTO $dto): stdClass|null
+
+    public function update(UpdateTarefaDTO $dto): void
     {
-        return null;
+        return $this->model->findOrFail()->update();
     }
 }
