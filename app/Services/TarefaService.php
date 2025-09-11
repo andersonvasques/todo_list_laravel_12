@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\DTO\CreateTarefaDTO;
+use App\DTO\UpdateTarefaDTO;
 use stdClass;
 
 class TarefaService
@@ -42,17 +44,9 @@ class TarefaService
      * Create a new register in the repository
      * @return void
      */
-    public function new(
-        string $titulo,
-        string $status,
-        string $id_user
-    ): stdClass
+    public function new(CreateTarefaDTO $dto): stdClass
     {
-        return $this->repository->new(
-            $titulo,
-            $status,
-            $id_user
-        );
+        return $this->repository->new($dto);
     }
 
     /**
@@ -64,19 +58,9 @@ class TarefaService
      * @param string $id_user
      * @return \stdClass|null
      */
-    public function update(
-        string $id,
-        string $titulo,
-        string $status,
-        string $id_user
-    ): stdClass|null
+    public function update(UpdateTarefaDTO $dto): stdClass|null
     {
-        return $this->repository->update(
-            $id,
-            $titulo,
-            $status,
-            $id_user
-        );
+        return $this->repository->update($dto);
     }
 
     /**

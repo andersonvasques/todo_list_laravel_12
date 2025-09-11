@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\CreateTarefaDTO;
+use App\DTO\UpdateTarefaDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateTarefa;
 use App\Models\Tarefa;
@@ -25,31 +27,29 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function store(StoreUpdateTarefa $request, Tarefa $tarefa)
+    public function store(StoreUpdateTarefa $request)
     {
-        $data = $request->validated();
-        $data['status'] = 'Aberto';
+        $tarefa = $this->service->new(
+            CreateTarefaDTO::makeFromRequest($request);
+        );
 
-        $tarefa = $tarefa->create($data);
-
-        // return redirect()->route('tarefas.index');
         return response()->json([
             'message' => 'Tarefa criada com sucesso',
             'tarefa' => $tarefa
         ]);
     }
 
-    public function update(StoreUpdateTarefa $request, Tarefa $tarefa, string|int $id)
+    public function update(StoreUpdateTarefa $request, Tarefa $tarefa)
     {
-        $tarefa = $tarefa->find($id);
+        $tarefa = $this->service->update(
+            UpdateTarefaDTO::makeFromRequest($request),
+        );
 
         if (!$tarefa) {
             return response()->json([
                 'error' => 'Tarefa não encontrada'
             ], Response::HTTP_NOT_FOUND);
         }
-
-        $tarefa->update($request->validated());
 
         return response()->json([
             'message' => 'Tarefa atualizada com sucesso',
