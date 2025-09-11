@@ -20,7 +20,7 @@ class TarefaController extends Controller
     public function index(Request $request)
     {
         // $tarefas = $tarefa->where('id_user', 1)->get();
-        $tarefas = $this->service->getAll($request->filter);
+        $tarefas = $this->service->get($request->filter);
 
         return response()->json([
             'tarefas' => $tarefas,
@@ -29,7 +29,7 @@ class TarefaController extends Controller
 
     public function store(StoreUpdateTarefa $request)
     {
-        $tarefa = $this->service->new(
+        $tarefa = $this->service->store(
             CreateTarefaDTO::makeFromRequest($request);
         );
 
@@ -57,7 +57,7 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function destroy(string|int $id)
+    public function destroy(int $id)
     {
         $tarefa = $this->service->delete($id);
 

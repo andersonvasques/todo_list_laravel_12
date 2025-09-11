@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\DTO\CreateTarefaDTO;
 use App\DTO\UpdateTarefaDTO;
-use stdClass;
 
 class TarefaService
 {
@@ -32,9 +31,9 @@ class TarefaService
      * Summary of findOne
      * Get only one register of the repository
      * @param string|int $id
-     * @return \stdClass|null
+     * @return object|null
      */
-    public function show(string|int $id): stdClass|null
+    public function show(string|int $id): object|null
     {
         return $this->repository->findOne($id);
     }
@@ -42,9 +41,9 @@ class TarefaService
     /**
      * Summary of new
      * Create a new register in the repository
-     * @return void
+     * @return object
      */
-    public function store(CreateTarefaDTO $dto): stdClass
+    public function store(CreateTarefaDTO $dto): object
     {
         return $this->repository->new($dto);
     }
@@ -56,11 +55,10 @@ class TarefaService
      * @param string $titulo
      * @param string $status
      * @param string $id_user
-     * @return \stdClass|null
      */
-    public function update(UpdateTarefaDTO $dto): stdClass|null
+    public function update(UpdateTarefaDTO $dto): void
     {
-        return $this->repository->update($dto);
+        $this->repository->update($dto);
     }
 
     /**

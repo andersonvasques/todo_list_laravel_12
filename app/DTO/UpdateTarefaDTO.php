@@ -7,7 +7,7 @@ use App\Http\Requests\StoreUpdateTarefa;
 class UpdateTarefaDTO
 {
     public function __construct(
-        public string $id,
+        public int $id,
         public string $titulo,
         public string $status,
         public string $id_user,

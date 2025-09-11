@@ -27,14 +27,14 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
         return null;
     }
 
-    public function delete(string|int $id): void
+    public function delete(int $id): void
     {
 
     }
 
-    public function store(CreateTarefaDTO $dto): stdClass
+    public function store(CreateTarefaDTO $dto): object
     {
-        return new stdClass();
+        return new object;
     }
 
     public function update(UpdateTarefaDTO $dto): void
