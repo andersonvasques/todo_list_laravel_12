@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\DTO\CreateTarefaDTO;
 use App\DTO\UpdateTarefaDTO;
 use App\Models\Tarefa;
+use App\Repositories\{TarefaRepositoryInterface};
+use Illuminate\Http\Response;
 
 class TarefaEloquentORM implements TarefaRepositoryInterface
 {
@@ -19,7 +21,7 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
                 $query->where('titulo', $filter);
             }
         })
-        ->all()
+        ->get()
         ->toArray();
     }
 
@@ -28,7 +30,9 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
         $tarefa = $this->model->find($id);
 
         if (!$tarefa) {
-            return null;
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
         }
 
         return (object) $tarefa->toArray();
@@ -41,12 +45,12 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
 
     public function store(CreateTarefaDTO $dto): object
     {
-        // $tarefa = $this->model->create(
-        //     (array) $dto
-        // );
+        $tarefa = $this->model->create(
+            (array) $dto
+        );
 
-        // return (object) $tarefa->toArray();
-        return (object) $this->model->create((array) $dto);
+        return (object) $tarefa->toArray();
+        // return (object) $this->model->create((array) $dto);
     }
 
     public function update(UpdateTarefaDTO $dto): void

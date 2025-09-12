@@ -27,7 +27,11 @@ class StoreUpdateTarefa extends FormRequest
                 'required',
                 'min:3',
                 'max:255',
-                'unique:tarefas'
+                'unique:tarefas,titulo'
+            ],
+            'id_user' => [
+                'required',
+                'integer'
             ],
         ];
 
@@ -37,6 +41,13 @@ class StoreUpdateTarefa extends FormRequest
                 'min:3',
                 'max:255',
                 Rule::unique('tarefas')->ignore($this->id),
+            ];
+            $rules['id'] = [
+                'required',
+                'integer'
+            ];
+            $rules['status'] = [
+                'required'
             ];
         }
 

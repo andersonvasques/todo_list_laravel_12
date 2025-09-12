@@ -10,7 +10,7 @@ class UpdateTarefaDTO
         public int $id,
         public string $titulo,
         public string $status,
-        public string $id_user,
+        public int $id_user,
     ){}
 
     public static function makeFromRequest(StoreUpdateTarefa $request): self

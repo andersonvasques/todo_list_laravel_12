@@ -17,10 +17,9 @@ class TarefaController extends Controller
         protected TarefaService $service
     ){}
 
-    public function index(Request $request)
+    public function show(int $id)
     {
-        // $tarefas = $tarefa->where('id_user', 1)->get();
-        $tarefas = $this->service->get($request->filter);
+        $tarefas = $this->service->show($id);
 
         return response()->json([
             'tarefas' => $tarefas,
@@ -44,12 +43,6 @@ class TarefaController extends Controller
         $tarefa = $this->service->update(
             UpdateTarefaDTO::makeFromRequest($request),
         );
-
-        if (!$tarefa) {
-            return response()->json([
-                'error' => 'Tarefa não encontrada'
-            ], Response::HTTP_NOT_FOUND);
-        }
 
         return response()->json([
             'message' => 'Tarefa atualizada com sucesso',

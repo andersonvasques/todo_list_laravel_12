@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\CreateTarefaDTO;
 use App\DTO\UpdateTarefaDTO;
+use App\Repositories\TarefaRepositoryInterface;
 
 class TarefaService
 {
@@ -13,8 +14,10 @@ class TarefaService
      * Summary of __construct
      */
     public function __construct(
-
-    ) {}
+        TarefaRepositoryInterface $repository
+    ) {
+        $this->repository = $repository;
+    }
 
     /**
      * Summary of getAll
@@ -24,7 +27,7 @@ class TarefaService
      */
     public function get(string|null $filter): array
     {
-        return $this->repository->getAll($filter);
+        return $this->repository->get($filter);
     }
 
     /**
@@ -35,7 +38,7 @@ class TarefaService
      */
     public function show(string|int $id): object|null
     {
-        return $this->repository->findOne($id);
+        return $this->repository->show($id);
     }
 
     /**
@@ -45,7 +48,7 @@ class TarefaService
      */
     public function store(CreateTarefaDTO $dto): object
     {
-        return $this->repository->new($dto);
+        return $this->repository->store($dto);
     }
 
     /**

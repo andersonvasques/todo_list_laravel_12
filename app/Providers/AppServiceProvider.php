@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Repositories\TarefaEloquentORM;
-use App\Repositories\TarefaRepositoryInterface;
+use App\Repositories\{TarefaEloquentORM};
+use App\Repositories\{TarefaRepositoryInterface};
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

@@ -9,7 +9,7 @@ class CreateTarefaDTO
     public function __construct(
         public string $titulo,
         public string $status,
-        public string $id_user,
+        public int $id_user,
     ){}
 
     public static function makeFromRequest(StoreUpdateTarefa $request): self
@@ -17,7 +17,7 @@ class CreateTarefaDTO
         $data = $request->validated();
         return new self(
             $data['titulo'],
-            'Aberto',
+            $data['status'] = 'Aberto',
             $data['id_user'],
         );
     }
