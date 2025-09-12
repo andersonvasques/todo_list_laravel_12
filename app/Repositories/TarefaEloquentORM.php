@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\DTO\CreateTarefaDTO;
 use App\DTO\UpdateTarefaDTO;
 use App\Models\Tarefa;
-use stdClass;
 
 class TarefaEloquentORM implements TarefaRepositoryInterface
 {
@@ -17,28 +16,41 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
     {
         return $this->model->where(function ($query) use ($filter) {
             if($filter) {
-                $query->where()
+                $query->where('titulo', $filter);
             }
         })
+        ->all()
+        ->toArray();
     }
 
     public function show(int $id): object|null
     {
-        return null;
+        $tarefa = $this->model->find($id);
+
+        if (!$tarefa) {
+            return null;
+        }
+
+        return (object) $tarefa->toArray();
     }
 
     public function delete(int $id): void
     {
-
+        $this->model->findOrFail($id)->delete();
     }
 
     public function store(CreateTarefaDTO $dto): object
     {
-        return new object;
+        // $tarefa = $this->model->create(
+        //     (array) $dto
+        // );
+
+        // return (object) $tarefa->toArray();
+        return (object) $this->model->create((array) $dto);
     }
 
     public function update(UpdateTarefaDTO $dto): void
     {
-        return $this->model->findOrFail()->update();
+        $this->model->findOrFail($dto->id)->update((array) $dto);
     }
 }

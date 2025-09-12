@@ -30,7 +30,7 @@ class TarefaController extends Controller
     public function store(StoreUpdateTarefa $request)
     {
         $tarefa = $this->service->store(
-            CreateTarefaDTO::makeFromRequest($request);
+            CreateTarefaDTO::makeFromRequest($request)
         );
 
         return response()->json([
