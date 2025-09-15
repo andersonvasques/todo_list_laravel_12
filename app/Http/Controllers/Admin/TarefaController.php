@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\DTO\CreateTarefaDTO;
 use App\DTO\UpdateTarefaDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUpdateTarefa;
-use App\Models\Tarefa;
+use App\Http\Requests\StoreTarefa;
+use App\Http\Requests\UpdateTarefa;
 use App\Services\TarefaService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TarefaController extends Controller
@@ -26,7 +25,7 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function store(StoreUpdateTarefa $request)
+    public function store(StoreTarefa $request)
     {
         $tarefa = $this->service->store(
             CreateTarefaDTO::makeFromRequest($request)
@@ -38,7 +37,7 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function update(StoreUpdateTarefa $request)
+    public function update(UpdateTarefa $request)
     {
         $this->service->update(
             UpdateTarefaDTO::makeFromRequest($request),

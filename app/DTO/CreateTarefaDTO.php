@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-use App\Http\Requests\StoreUpdateTarefa;
+use App\Http\Requests\StoreTarefa;
 
 class CreateTarefaDTO
 {
@@ -12,7 +12,7 @@ class CreateTarefaDTO
         public int $id_user,
     ){}
 
-    public static function makeFromRequest(StoreUpdateTarefa $request): self
+    public static function makeFromRequest(StoreTarefa $request): self
     {
         $data = $request->validated();
         return new self(
