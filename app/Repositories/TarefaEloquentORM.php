@@ -4,9 +4,12 @@ namespace App\Repositories;
 
 use App\DTO\CreateTarefaDTO;
 use App\DTO\UpdateTarefaDTO;
+use App\Http\Controllers\Auth\AuthController;
 use App\Models\Tarefa;
+use App\Models\User;
 use App\Repositories\{TarefaRepositoryInterface};
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class TarefaEloquentORM implements TarefaRepositoryInterface
 {
@@ -27,15 +30,25 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
 
     public function show(int $id): object|null
     {
+        $userId = Auth::id();
+
         $tarefa = $this->model->find($id);
 
         if (!$tarefa) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
+
+        } elseif ($tarefa->id_user == $userId) {
+            return (object) $tarefa->toArray();
+
+        } else {
+            return response()->json([
+                'message' => 'Tarefa não é do usuário autenticado'
+            ]);
+
         }
 
-        return (object) $tarefa->toArray();
     }
 
     public function delete(int $id): void
