@@ -38,20 +38,26 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function update(StoreUpdateTarefa $request, Tarefa $tarefa)
+    public function update(StoreUpdateTarefa $request)
     {
-        $tarefa = $this->service->update(
+        $this->service->update(
             UpdateTarefaDTO::makeFromRequest($request),
         );
 
         return response()->json([
             'message' => 'Tarefa atualizada com sucesso',
-            'tarefa' => $tarefa,
+            'request' => $request->validated()
         ]);
     }
 
     public function destroy(int $id)
     {
+        if (!$this->service->show($id)) {
+            return response()->json([
+                'message' => 'Tarefa não encontrada'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
         $tarefa = $this->service->delete($id);
 
         return response()->json([
