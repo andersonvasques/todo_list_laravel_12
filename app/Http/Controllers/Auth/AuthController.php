@@ -17,7 +17,7 @@ class AuthController extends Controller
         protected TarefaService $service
     ){}
 
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $user = User::where('name', $request->name)->first();
 
