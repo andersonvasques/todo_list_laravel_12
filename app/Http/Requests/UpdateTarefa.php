@@ -37,7 +37,6 @@ class UpdateTarefa extends FormRequest
                 'required'
             ],
             'id_user' => [
-                'required',
                 'integer'
             ],
         ];

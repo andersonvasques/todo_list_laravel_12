@@ -3,6 +3,7 @@
 namespace App\DTO;
 
 use App\Http\Requests\UpdateTarefa;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateTarefaDTO
 {
@@ -20,7 +21,7 @@ class UpdateTarefaDTO
             $data['id'],
             $data['titulo'],
             $data['status'],
-            $data['id_user'],
+            $data['id_user'] = Auth::id(),
         );
     }
 }

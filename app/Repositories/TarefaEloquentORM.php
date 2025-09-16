@@ -8,8 +8,11 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Models\Tarefa;
 use App\Models\User;
 use App\Repositories\{TarefaRepositoryInterface};
+use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Validation\ValidationException;
 
 class TarefaEloquentORM implements TarefaRepositoryInterface
 {
@@ -63,11 +66,21 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
         );
 
         return (object) $tarefa->toArray();
-        // return (object) $this->model->create((array) $dto);
     }
 
     public function update(UpdateTarefaDTO $dto): void
     {
+        $authUserId = Auth::id();
+        $tarefa = $this->model->find($dto->id);
+
+        throw_if(!$tarefa, ValidationException::withMessages([
+            'error' => 'Tarefa não encontrada'
+        ]));
+
+        throw_if($tarefa->id_user !== $authUserId, ValidationException::withMessages([
+            'error' => 'Tarefa não é do usuário autenticado'
+        ]));
+
         $this->model->findOrFail($dto->id)->update((array) $dto);
     }
 }
