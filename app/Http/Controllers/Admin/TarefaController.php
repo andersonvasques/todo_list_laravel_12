@@ -61,8 +61,7 @@ class TarefaController extends Controller
         $tarefa = $this->service->delete($id);
 
         return response()->json([
-            'message' => 'Tarefa excluida com sucesso',
-            'tarefa' => $tarefa
+            'message' => 'Tarefa excluida com sucesso'
         ]);
     }
 

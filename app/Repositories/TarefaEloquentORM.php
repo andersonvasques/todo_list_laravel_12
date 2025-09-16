@@ -56,6 +56,14 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
 
     public function delete(int $id): void
     {
+        $authUserId = Auth::id();
+
+        $tarefa = $this->model->find($id);
+
+        throw_if($tarefa->id_user !== $authUserId, ValidationException::withMessages([
+            'error' => 'Tarefa não é do usuário autenticado'
+        ]));
+
         $this->model->findOrFail($id)->delete();
     }
 
