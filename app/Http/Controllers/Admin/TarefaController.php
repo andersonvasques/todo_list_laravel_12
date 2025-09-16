@@ -9,6 +9,7 @@ use App\Http\Requests\StoreTarefa;
 use App\Http\Requests\UpdateTarefa;
 use App\Services\TarefaService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class TarefaController extends Controller
 {

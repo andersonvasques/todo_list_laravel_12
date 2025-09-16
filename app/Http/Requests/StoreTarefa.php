@@ -29,7 +29,6 @@ class StoreTarefa extends FormRequest
                 'unique:tarefas,titulo'
             ],
             'id_user' => [
-                'required',
                 'integer'
             ],
         ];
