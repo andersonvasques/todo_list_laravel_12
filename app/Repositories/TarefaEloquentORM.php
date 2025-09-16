@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Models\Tarefa;
 use App\Models\User;
 use App\Repositories\{TarefaRepositoryInterface};
-use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,20 +36,17 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
 
         $tarefa = $this->model->find($id);
 
-        if (!$tarefa) {
-            return response()->json([
-                'error' => 'Not Found'
-            ], Response::HTTP_NOT_FOUND);
+        throw_if(!$tarefa, ValidationException::withMessages([
+            'error' => 'Tarefa não encontrada'
+        ]));
 
-        } elseif ($tarefa->id_user == $userId) {
-            return (object) $tarefa->toArray();
+        throw_if($tarefa->id_user !== $userId, ValidationException::withMessages([
+            'error' => 'Tarefa não é do usuário autenticado'
+        ]));
 
-        } else {
-            return response()->json([
-                'message' => 'Tarefa não é do usuário autenticado'
-            ]);
-
-        }
+        return response()->json([
+            'tarefa' => $tarefa
+        ]);
 
     }
 
