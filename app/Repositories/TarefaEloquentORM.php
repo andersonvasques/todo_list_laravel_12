@@ -19,15 +19,16 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
         protected Tarefa $model
     ){}
 
-    public function get(string|null $filter): array
+    public function get(string|null $filter, int $perPage = 5)
     {
-        return $this->model->where(function ($query) use ($filter) {
-            if($filter) {
-                $query->where('titulo', $filter);
-            }
-        })
-        ->get()
-        ->toArray();
+        $query = $this->model->query();
+
+        if ($filter) {
+            $query = $this->model->query()->where('titulo', 'like', "%{$filter}%");
+        }
+
+        return $query->paginate($perPage);
+
     }
 
     public function show(int $id): object|null

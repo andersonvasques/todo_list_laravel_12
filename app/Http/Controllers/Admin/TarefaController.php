@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTarefa;
 use App\Http\Requests\UpdateTarefa;
 use App\Services\TarefaService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +18,24 @@ class TarefaController extends Controller
     public function __construct(
         protected TarefaService $service
     ){}
+
+    public function index(Request $request): JsonResponse
+    {
+        $filter = $request->input('filter');
+        $perPage = $request->input('perPage', 5);
+
+        $paginator = $this->service->get($filter, $perPage);
+
+        return response()->json([
+            'data' => $paginator->items(),
+            'current_page' => $paginator->currentPage(),
+            'per_page' => $paginator->perPage(),
+            'total' => $paginator->total(),
+            'next_page_url' => $paginator->nextPageUrl(),
+            'prev_page_url' => $paginator->previousPageUrl(),
+            'last_page' => $paginator->lastPage(),
+        ]);
+    }
 
     public function show(int $id)
     {

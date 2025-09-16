@@ -9,7 +9,7 @@ use App\DTO\{
 
 interface TarefaRepositoryInterface
 {
-    public function get(string|null $filter): array;
+    public function get(string|null $filter, int $perPage = 5);
     public function show(int $id): object|null;
     public function delete(int $id): void;
     public function store(CreateTarefaDTO $dto): object;

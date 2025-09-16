@@ -23,11 +23,10 @@ class TarefaService
      * Summary of getAll
      * Get all register of the repository
      * @param string|null $filter
-     * @return array
      */
-    public function get(string|null $filter): array
+    public function get(string|null $filter, int $perPage = 5)
     {
-        return $this->repository->get($filter);
+        return $this->repository->get($filter, $perPage);
     }
 
     /**
