@@ -21,11 +21,13 @@ class AuthController extends Controller
     {
         $user = User::where('name', $request->name)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'error' => 'Usuário ou senha inválidos'
-            ]);
-        }
+        throw_if(!$user, ValidationException::withMessages([
+            'error' => 'Usuário ou senha inválidos'
+        ]));
+
+        throw_if(!Hash::check($request->password, $user->password), ValidationException::withMessages([
+            'error' => 'Usuário ou senha inválidos'
+        ]));
 
         return response()->json([
             'access' => $user->createToken('token-giga')->plainTextToken
