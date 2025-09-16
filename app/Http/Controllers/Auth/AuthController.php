@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\DTO\CreateTarefaDTO;
-use App\DTO\UpdateTarefaDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\StoreTarefa;
-use App\Http\Requests\UpdateTarefa;
 use App\Models\User;
 use App\Services\TarefaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -22,13 +17,15 @@ class AuthController extends Controller
         protected TarefaService $service
     ){}
 
-    public function login(User $user, Request $request): JsonResponse
+    public function login(Request $request)
     {
-        $user = $user->query()->where('name', $request->name)->first();
-        $password = $user->query()->where('password', $request->password)->first();
+        $user = User::where('name', $request->name)->first();
 
-        throw_if(!$user, ValidationException::withMessages(['error' => 'Usuário ou senha inválidos']));
-        throw_if(!$password, ValidationException::withMessages(['error' => 'Usuário ou senha inválidos']));
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'error' => 'Usuário ou senha inválidos'
+            ]);
+        }
 
         return response()->json([
             'access' => $user->createToken('token-giga')->plainTextToken
@@ -47,6 +44,7 @@ class AuthController extends Controller
     public function register(User $user, LoginRequest $request): JsonResponse
     {
         $request = $request->validated();
+        $request['password'] = Hash::make($request['password']);
         $user = $user->create($request);
 
         return response()->json([
