@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TarefaStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ return new class extends Migration
         Schema::create('tarefas', function (Blueprint $table) {
             $table->id('id');
             $table->string('titulo');
-            $table->enum('status', ['Aberto', 'Concluido']);
+            $table->enum('status', array_column(TarefaStatusEnum::cases(), 'value'));
             $table->foreignId('id_user')->constrained('users');
             $table->timestamps();
         });

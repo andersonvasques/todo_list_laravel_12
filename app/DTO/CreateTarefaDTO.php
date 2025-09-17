@@ -2,6 +2,7 @@
 
 namespace App\DTO;
 
+use App\Enums\TarefaStatusEnum;
 use App\Http\Requests\StoreTarefa;
 use Illuminate\Support\Facades\Auth;
 
@@ -9,7 +10,7 @@ class CreateTarefaDTO
 {
     public function __construct(
         public string $titulo,
-        public string $status,
+        public TarefaStatusEnum $status,
         public int $id_user,
     ){}
 
@@ -19,7 +20,8 @@ class CreateTarefaDTO
         $data = $request->validated();
         return new self(
             $data['titulo'],
-            $data['status'] = 'Aberto',
+            // $data['status'] = 'Aberto',
+            TarefaStatusEnum::A,
             $data['id_user'] = Auth::id(),
         );
     }
