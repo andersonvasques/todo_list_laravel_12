@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTO\CreateTarefaDTO;
 use App\DTO\UpdateTarefaDTO;
+use App\Helpers\PaginatedResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTarefa;
 use App\Http\Requests\UpdateTarefa;
@@ -26,15 +27,7 @@ class TarefaController extends Controller
 
         $paginator = $this->service->get($filter, $perPage);
 
-        return response()->json([
-            'data' => $paginator->items(),
-            'current_page' => $paginator->currentPage(),
-            'per_page' => $paginator->perPage(),
-            'total' => $paginator->total(),
-            'next_page_url' => $paginator->nextPageUrl(),
-            'prev_page_url' => $paginator->previousPageUrl(),
-            'last_page' => $paginator->lastPage(),
-        ]);
+        return response()->json(PaginatedResponse::format($paginator));
     }
 
     public function show(int $id): JsonResponse
