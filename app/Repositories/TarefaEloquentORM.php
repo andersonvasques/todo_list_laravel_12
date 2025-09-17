@@ -21,9 +21,12 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
 
     public function get(string|null $filter, int $perPage = 5)
     {
-        $query = $this->model->query();
+        $authUserId = Auth::id();
 
-        if ($filter) {
+        $query = $this->model->query();
+        $userId = $query->where('id_user', $authUserId);
+
+        if ($userId && $filter) {
             $query = $this->model->query()->where('titulo', 'like', "%{$filter}%");
         }
 
