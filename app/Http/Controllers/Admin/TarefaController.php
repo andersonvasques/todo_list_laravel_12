@@ -37,7 +37,7 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         $tarefas = $this->service->show($id);
 
@@ -46,7 +46,7 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function store(StoreTarefa $request)
+    public function store(StoreTarefa $request): JsonResponse
     {
         $tarefa = $this->service->store(
             CreateTarefaDTO::makeFromRequest($request)
@@ -58,7 +58,7 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function update(UpdateTarefa $request)
+    public function update(UpdateTarefa $request): JsonResponse
     {
         $this->service->update(
             UpdateTarefaDTO::makeFromRequest($request),
@@ -70,7 +70,7 @@ class TarefaController extends Controller
         ]);
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
         if (!$this->service->show($id)) {
             return response()->json([
