@@ -26,6 +26,10 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
         $query = $this->model->query();
         $userId = $query->where('id_user', $authUserId);
 
+        throw_if(!$userId, ValidationException::withMessages([
+            'error' => 'Tarefas não são do usuário autenticado'
+        ]));
+
         if ($userId && $filter) {
             $query = $this->model->query()->where('titulo', 'like', "%{$filter}%");
         }
