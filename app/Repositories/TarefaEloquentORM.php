@@ -34,7 +34,8 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
             $query = $this->model->query()->where('titulo', 'like', "%{$filter}%");
         }
 
-        return $query->paginate($perPage);
+        // return $query->paginate($perPage);
+        return $query->simplePaginate($perPage);
 
     }
 
