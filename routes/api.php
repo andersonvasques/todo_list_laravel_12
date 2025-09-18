@@ -10,7 +10,3 @@ Route::apiResource('/tarefas', TarefaController::class)->middleware('auth:sanctu
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
-
-Route::get('/teste', function() {
-    dd(array_column(TarefaStatusEnum::cases(), 'name'));
-});
