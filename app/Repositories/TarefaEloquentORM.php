@@ -32,16 +32,12 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
 
     public function show(int $id): object|null
     {
-        $userId = Auth::id();
 
-        $tarefa = $this->model->find($id);
+        $tarefa = $this->model->where('id_user', Auth::id())
+                                ->find($id);
 
         throw_if(!$tarefa, ValidationException::withMessages([
             'error' => 'Tarefa não encontrada'
-        ]));
-
-        throw_if($tarefa->id_user !== $userId, ValidationException::withMessages([
-            'error' => 'Tarefa não é do usuário autenticado'
         ]));
 
         return response()->json([
@@ -50,41 +46,26 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
 
     }
 
-    public function delete(int $id): void
+    public function delete(int $id): bool
     {
-        $authUserId = Auth::id();
-
-        $tarefa = $this->model->find($id);
-
-        throw_if($tarefa->id_user !== $authUserId, ValidationException::withMessages([
-            'error' => 'Tarefa não é do usuário autenticado'
-        ]));
-
-        $this->model->findOrFail($id)->delete();
+        return $this->model->where('id_user', Auth::id())
+                    ->findOrFail($id)
+                    ->delete();
     }
 
     public function store(CreateTarefaDTO $dto): object
     {
-        $tarefa = $this->model->create(
+        return (object) $this->model->create(
             (array) $dto
-        );
-
-        return (object) $tarefa->toArray();
+        )->toArray();
     }
 
-    public function update(UpdateTarefaDTO $dto): void
+    public function update(UpdateTarefaDTO $dto): bool
     {
-        $authUserId = Auth::id();
-        $tarefa = $this->model->find($dto->id);
-
-        throw_if(!$tarefa, ValidationException::withMessages([
-            'error' => 'Tarefa não encontrada'
-        ]));
-
-        throw_if($tarefa->id_user !== $authUserId, ValidationException::withMessages([
-            'error' => 'Tarefa não é do usuário autenticado'
-        ]));
-
-        $this->model->findOrFail($dto->id)->update((array) $dto);
+        return $this->model->where('id_user', Auth::id())
+                    ->findOrFail($dto->id)
+                    ->update(
+                        (array) $dto
+                    );
     }
 }

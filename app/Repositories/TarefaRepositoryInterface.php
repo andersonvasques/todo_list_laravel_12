@@ -11,7 +11,7 @@ interface TarefaRepositoryInterface
 {
     public function get(array $filter, int $perPage = 5);
     public function show(int $id): object|null;
-    public function delete(int $id): void;
+    public function delete(int $id): bool;
     public function store(CreateTarefaDTO $dto): object;
-    public function update(UpdateTarefaDTO $dto): void;
+    public function update(UpdateTarefaDTO $dto): bool;
 }
