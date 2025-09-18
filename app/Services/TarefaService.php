@@ -24,9 +24,9 @@ class TarefaService
      * Get all register of the repository
      * @param string|null $filter
      */
-    public function get(string|null $filter, int $perPage = 5)
+    public function get(array $data, int $perPage = 5)
     {
-        return $this->repository->get($filter, $perPage);
+        return $this->repository->get($data, $perPage);
     }
 
     /**

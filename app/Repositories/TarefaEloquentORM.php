@@ -19,24 +19,15 @@ class TarefaEloquentORM implements TarefaRepositoryInterface
         protected Tarefa $model
     ){}
 
-    public function get(string|null $filter, int $perPage = 5)
+    public function get(array $data, int $perPage = 5)
     {
-        $authUserId = Auth::id();
+        $status = $data['status'] ?? null;
+        $titulo = $data['titulo'] ?? null;
 
-        $query = $this->model->query();
-        $userId = $query->where('id_user', $authUserId);
-
-        throw_if(!$userId, ValidationException::withMessages([
-            'error' => 'Tarefas não são do usuário autenticado'
-        ]));
-
-        if ($userId && $filter) {
-            $query = $this->model->query()->where('titulo', 'like', "%{$filter}%");
-        }
-
-        // return $query->paginate($perPage);
-        return $query->simplePaginate($perPage);
-
+        return $this->model->where('id_user', Auth::id())
+            ->when(isset($status), fn($query) => $query->where('status', 'like', "%$status%"))
+            ->when(isset($titulo), fn($query) => $query->where('titulo', 'like', "%$titulo%"))
+            ->simplePaginate($perPage);
     }
 
     public function show(int $id): object|null

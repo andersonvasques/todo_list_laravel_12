@@ -22,10 +22,9 @@ class TarefaController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $filter = $request->input('filter');
         $perPage = $request->input('perPage', 5);
 
-        $paginator = $this->service->get($filter, $perPage);
+        $paginator = $this->service->get($request->all(), $perPage);
 
         return response()->json(PaginatedResponse::format($paginator));
     }
