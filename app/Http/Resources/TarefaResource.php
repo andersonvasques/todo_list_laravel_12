@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,12 +15,12 @@ class TarefaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'titulo' => $this->titulo,
-            'id_user' => $this->id_user,
-            'dt_created' => Carbon::make($this->created_at)
-                                        ->tz('America/Sao_Paulo')
-                                        ->format('d-m-Y, H:i:s')
+            'id'           => $this->id,
+            'titulo'       => $this->titulo,
+            'status_label' => $this->status,
+            'status'       => $this->status == 'Concluido',
+            'created_at'   => $this->created_at,
+            'updated_at'   => $this->updated_at,
         ];
     }
 }

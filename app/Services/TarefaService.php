@@ -8,15 +8,13 @@ use App\Repositories\TarefaRepositoryInterface;
 
 class TarefaService
 {
-    protected $repository;
 
     /**
      * Summary of __construct
      */
     public function __construct(
-        TarefaRepositoryInterface $repository
+        private TarefaRepositoryInterface $repository
     ) {
-        $this->repository = $repository;
     }
 
     /**

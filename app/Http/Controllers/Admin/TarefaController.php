@@ -8,9 +8,11 @@ use App\Helpers\PaginatedResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTarefa;
 use App\Http\Requests\UpdateTarefa;
+use App\Http\Resources\TarefaResource;
 use App\Services\TarefaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
 class TarefaController extends Controller
@@ -19,22 +21,19 @@ class TarefaController extends Controller
         protected TarefaService $service
     ){}
 
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): JsonResource
     {
-        $perPage = $request->input('perPage', 5);
+        $perPage = $request->input('perPage', 20);
 
         $paginator = $this->service->get($request->all(), $perPage);
 
-        return response()->json(PaginatedResponse::format($paginator));
+        return TarefaResource::collection($paginator);
+        // return response()->json(PaginatedResponse::format($paginator));
     }
 
-    public function show(int $id): JsonResponse
+    public function show(int $id): JsonResource
     {
-        $tarefas = $this->service->show($id);
-
-        return response()->json([
-            'tarefas' => $tarefas,
-        ]);
+        return new TarefaResource($this->service->show($id));
     }
 
     public function store(StoreTarefa $request): JsonResponse
