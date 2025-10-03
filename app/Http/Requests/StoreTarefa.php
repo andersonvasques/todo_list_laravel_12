@@ -26,7 +26,7 @@ class StoreTarefa extends FormRequest
                 'required',
                 'min:3',
                 'max:255',
-                'unique:tarefas,titulo'
+                new TarefaUniqueRules()
             ],
             'id_user' => [
                 'integer'

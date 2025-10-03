@@ -27,7 +27,7 @@ class UpdateTarefa extends FormRequest
                 'required',
                 'min:3',
                 'max:255',
-                Rule::unique('tarefas')->ignore($this->id),
+                // Rule::unique('tarefas')->ignore($this->id),
             ],
             'id' => [
                 'required',

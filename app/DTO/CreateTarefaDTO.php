@@ -16,11 +16,9 @@ class CreateTarefaDTO
 
     public static function makeFromRequest(StoreTarefa $request): self
     {
-        // dd(Auth::id());
         $data = $request->validated();
         return new self(
             $data['titulo'],
-            // $data['status'] = 'Aberto',
             TarefaStatusEnum::A,
             $data['id_user'] = Auth::id(),
         );

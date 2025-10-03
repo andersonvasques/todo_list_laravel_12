@@ -28,7 +28,6 @@ class TarefaController extends Controller
         $paginator = $this->service->get($request->all(), $perPage);
 
         return TarefaResource::collection($paginator);
-        // return response()->json(PaginatedResponse::format($paginator));
     }
 
     public function show(int $id): JsonResource
@@ -36,43 +35,31 @@ class TarefaController extends Controller
         return new TarefaResource($this->service->show($id));
     }
 
-    public function store(StoreTarefa $request): JsonResponse
+    public function store(StoreTarefa $request): JsonResource
     {
-        $tarefa = $this->service->store(
-            CreateTarefaDTO::makeFromRequest($request)
-        );
+        $tarefa = $this->service->store(CreateTarefaDTO::makeFromRequest($request));
 
-        return response()->json([
-            'message' => 'Tarefa criada com sucesso',
-            'tarefa' => $tarefa
-        ]);
+        return new TarefaResource($tarefa);
     }
 
-    public function update(UpdateTarefa $request): JsonResponse
+    public function update(UpdateTarefa $request): Response
     {
-        $this->service->update(
-            UpdateTarefaDTO::makeFromRequest($request),
-        );
+        $this->service->update(UpdateTarefaDTO::makeFromRequest($request));
 
-        return response()->json([
-            'message' => 'Tarefa atualizada com sucesso',
-            'request' => $request->validated()
-        ]);
+        return response()->noContent();
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id): Response
     {
-        if (!$this->service->show($id)) {
-            return response()->json([
-                'message' => 'Tarefa não encontrada'
-            ], Response::HTTP_NOT_FOUND);
-        }
+        // if (!$this->service->show($id)) {
+        //     return response()->json([
+        //         'message' => 'Tarefa não encontrada'
+        //     ], Response::HTTP_NOT_FOUND);
+        // }
 
-        $tarefa = $this->service->delete($id);
+        $this->service->delete($id);
 
-        return response()->json([
-            'message' => 'Tarefa excluida com sucesso'
-        ]);
+        return response()->noContent();
     }
 
 }
