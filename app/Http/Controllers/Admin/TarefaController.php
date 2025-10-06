@@ -23,7 +23,7 @@ class TarefaController extends Controller
 
     public function index(Request $request): JsonResource
     {
-        $perPage = $request->input('perPage', 20);
+        $perPage = $request->input('perPage', 500);
 
         $paginator = $this->service->get($request->all(), $perPage);
 
